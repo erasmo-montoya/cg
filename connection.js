@@ -1,9 +1,3 @@
-$( document ).ready(function() {
-	//test
-	leer("Eruptions", ["Year","Country","DEATHS","Month","Day"]);
-});
-
-
 function leer(name, att){
 	var data = {
 		tableName: name,
