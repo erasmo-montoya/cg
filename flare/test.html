@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<h1>Hello AWRLD</h1>
+</body>
+
+<script>
+
+
+
+$(function(){
+	leer();
+});
+
+function leer(){
+	var url='https://lypqoj49qj.execute-api.us-east-2.amazonaws.com/dev/disasters/MapReduceQuery';
+	var data = {
+		tableName:"Eruptions",	
+		groupingKey:"Country",
+		groupinValue:"DEATHS"
+	};
+	$.post(url,data,function(data){
+		console.log(data);
+	}); 
+}
+
+function myselect(){
+	var url='https://lypqoj49qj.execute-api.us-east-2.amazonaws.com/dev/disasters/getData';
+	var attributes = JSON.stringify(["Year"]);
+	var data = {
+		tableName:"Eruptions",
+		attributes: ["Year","Country","DEATHS","Month","Day"]
+	};
+	$.post(url,data,function(data){
+		console.log(data);
+	}); 
+}
+
+function leer2(){
+  var data = {
+          tableName: 'Eruptions',
+          attributes: ['Year','Country','DEATHS','Month','Day']
+      }
+  $.ajax({
+      url: 'https://lypqoj49qj.execute-api.us-east-2.amazonaws.com/dev/disasters/getData',
+      type: 'POST',
+      crossDomain: true,
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      dataType: 'json',
+      success: function(data) {
+          console.log(data);
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+      }
+  });
+}
+</script>
+</html>
