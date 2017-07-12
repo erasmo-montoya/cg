@@ -1,4 +1,6 @@
-function leer(name, att){
+var leerResult = [];
+
+function leer(name, att, func = null){
 	var data = {
 		tableName: name,
 		attributes: att
@@ -12,7 +14,10 @@ function leer(name, att){
 		data: JSON.stringify(data),
 		dataType: 'json',
 		success: function(data) {
-			console.log(data);
+			leerResult = data.Items;
+			console.log(leerResult);
+			if(func != null)
+				func();
 		},
 		error: function(xhr, ajaxOptions, thrownError) {
 			console.log(thrownError);
