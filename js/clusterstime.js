@@ -19,14 +19,18 @@ function initMap() {
     zoom: 3,
     center: {lat: -12.046374, lng: -77.042793}
   });
-  leer('Eruptions',0);
+  leer();
 
 }
 
-function leer(table, year){
+function leer(){
+  var selectTable = document.getElementById("selectTable");
+  var table = selectTable.options[selectTable.selectedIndex].value;
+  var selectYear = document.getElementById("selectYear");
+  var year = selectYear.options[selectYear.selectedIndex].value;
   var data = {
           tableName: table,
-          attributes: ['Year','Country','Latitude','Longitude']
+          attributes: ['Year','Latitude','Longitude','Location_Name']
       }
   $.ajax({
       url: 'https://lypqoj49qj.execute-api.us-east-2.amazonaws.com/dev/disasters/getData',
@@ -39,17 +43,19 @@ function leer(table, year){
 
           clearMarkers();
           may = data.Items.filter(function(data){
-            return data.Year > year
+            return data.Year < year
           });
           console.log(may.length);
           locations = may.map(function(may){
             return {lat: may.Latitude, lng: may.Longitude}
           });
+          console.log(may);
           markers = locations.map(function(location, i) {
             return new google.maps.Marker({
               position: location,
+              //label: labels[i]
+
               //label: labels[(i) % labels.length]
-              label: "x"+i
             });
           });
 
