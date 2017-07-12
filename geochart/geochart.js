@@ -50,9 +50,9 @@ function processData() {
 
     current = years[min];
 
-    googleData = [['Country', 'Deaths']];
+    googleData = [['Country', 'Deaths', 'Eruptions']];
     for(var country in current) {
-        googleData.push([country, current[country].TotalDeaths]);
+        googleData.push([country, current[country].TotalDeaths, current[country].EventDetail.length]);
     }
 
     var data = google.visualization.arrayToDataTable(googleData);
@@ -82,10 +82,10 @@ function processData() {
             $("#slider").find(".ui-slider-handle").text(arrYears[value]);
 
             current = years[arrYears[value]];
-            googleData = [['Country', 'Deaths']];
+            googleData = [['Country', 'Deaths', 'Eruptions']];
             
             for(var country in current) {
-                googleData.push([country, current[country].TotalDeaths]);
+                googleData.push([country, current[country].TotalDeaths, current[country].EventDetail.length]);
             }
 
             var data = google.visualization.arrayToDataTable(googleData);
