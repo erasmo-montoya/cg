@@ -5,7 +5,7 @@ function leer(name, att, func = null){
 		tableName: name,
 		attributes: att
 	};
-
+	//Rodolfo
 	$.ajax({
 		url: 'https://lypqoj49qj.execute-api.us-east-2.amazonaws.com/dev/disasters/getData',
 		type: 'POST',
