@@ -1,21 +1,31 @@
 
 var map;
+var markers;
+var markerCluster;
+
 function clearMarkers(){
-  markers.map(function(marker){
-    marker.setMap(null);
-  })
+  if (markers) {
+    markers.map(function(marker){
+      marker.setMap(null);
+    })
+  }
+  if (markerCluster){
+    markerCluster.clearMarkers()
+  }
 }
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('map'), {
     zoom: 3,
-    center: {lat: -28.024, lng: 140.887}
+    center: {lat: -12.046374, lng: -77.042793}
   });
+  leer('Eruptions',0);
+
 }
 
-function leer(){
+function leer(table, year){
   var data = {
-          tableName: 'Eruptions',
+          tableName: table,
           attributes: ['Year','Country','Latitude','Longitude']
       }
   $.ajax({
@@ -26,11 +36,16 @@ function leer(){
       data: JSON.stringify(data),
       dataType: 'json',
       success: function(data) {
-          console.log(data);
-          locations = data.Items.map(function(data){
-            return {lat: data.Latitude, lng: data.Longitude}
+
+          clearMarkers();
+          may = data.Items.filter(function(data){
+            return data.Year > year
           });
-          var markers = locations.map(function(location, i) {
+          console.log(may.length);
+          locations = may.map(function(may){
+            return {lat: may.Latitude, lng: may.Longitude}
+          });
+          markers = locations.map(function(location, i) {
             return new google.maps.Marker({
               position: location,
               //label: labels[(i) % labels.length]
@@ -39,7 +54,7 @@ function leer(){
           });
 
           // Add a marker clusterer to manage the markers.
-          var markerCluster = new MarkerClusterer(map, markers,
+          markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
       },
