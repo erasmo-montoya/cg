@@ -24,13 +24,17 @@ function initMap() {
 }
 
 function leer(){
+  var attributes = ['Year','Latitude','Longitude','Location_Name'];
   var selectTable = document.getElementById("selectTable");
   var table = selectTable.options[selectTable.selectedIndex].value;
   var selectYear = document.getElementById("selectYear");
   var year = selectYear.options[selectYear.selectedIndex].value;
+  if (table==='Tsunamies'){
+      attributes= ['YEAR','LATITUDE','LONGITUDE','LOCATION_NAME'];
+  }
   var data = {
           tableName: table,
-          attributes: ['Year','Latitude','Longitude','Location_Name']
+          attributes: attributes
       }
   $.ajax({
       url: 'https://lypqoj49qj.execute-api.us-east-2.amazonaws.com/dev/disasters/getData',
@@ -43,10 +47,14 @@ function leer(){
 
           clearMarkers();
           may = data.Items.filter(function(data){
-            return data.Year < year
+              if (table==='Tsunamies')
+                  return data.LATITUDE && data.YEAR < year 
+              return data.Year < year
           });
           console.log(may.length);
           locations = may.map(function(may){
+            if (table==='Tsunamies')
+              return {lat: may.LATITUDE, lng: may.LONGITUDE}
             return {lat: may.Latitude, lng: may.Longitude}
           });
           console.log(may);
